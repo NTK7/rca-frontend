@@ -1,4 +1,4 @@
-export const detectionBaseApi = "http://localhost:5003";
+export const detectionBaseApi = "https://resturantreviewserver.herokuapp.com";
 
 export const detectionApi = {
     predict: `${detectionBaseApi}/predict`,

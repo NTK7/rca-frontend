@@ -62,7 +62,7 @@ const Detector = () => {
 
       {result && (
         <div className="detection-result">
-          <h3>Detection result:</h3> Text is of type: {result}
+          <h3>Detection result:</h3> Review is of type: {result}
         </div>
       )}
     </DetectorStyled>
