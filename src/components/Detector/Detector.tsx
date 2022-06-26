@@ -4,10 +4,16 @@ import styled from "styled-components";
 import { detectionApi } from "../../api/DetectionApi";
 import CustomButton from "../../common/CustomButton/CustomButton";
 
+type SentenseType = {
+  sentense: string;
+  review: string;
+};
+
 const Detector = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [textareaContent, setTextareaContent] = useState<string>("");
   const [result, setResult] = useState<string | undefined>();
+  const [reviewSentenses, setReviewSentenses] = useState<SentenseType[]>([]);
 
   const handleScan = () => {
     if (!textareaContent) {
@@ -19,8 +25,12 @@ const Detector = () => {
     axios
       .post(detectionApi.predict, detectionRequestBody)
       .then((response) => {
+        console.log("response", response);
         let detectionResult = response.data["Prediction"];
+        let reviewSentenses = response.data["Keys"];
+
         setResult(detectionResult);
+        setReviewSentenses(reviewSentenses);
       })
       .catch(() => alert("Something went wrong when scanning the text"))
       .finally(() => setIsLoading(false));
@@ -62,7 +72,21 @@ const Detector = () => {
 
       {result && (
         <div className="detection-result">
-          <h3>Detection result:</h3> Review is of type: {result}
+          <h3>Detection result:</h3>
+          <p>Review is of type:{" "}<strong>{result}</strong></p>
+        </div>
+      )}
+
+      {reviewSentenses.length > 0 && (
+        <div className="review-sentenses">
+          <h3>Review sentences:</h3>
+
+          {reviewSentenses.map((sentense, index) => (
+            <p key={index}>
+              {" "}
+              # {sentense.sentense} = <strong>{sentense.review}</strong>{" "}
+            </p>
+          ))}
         </div>
       )}
     </DetectorStyled>
@@ -89,18 +113,25 @@ const DetectorStyled = styled.div`
   }
 
   .detection-result {
-    margin: 4pc 1pc;
-    text-transform: uppercase;
+    margin: 2pc 1pc;
+    h3 {
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+    p {
+      font-size: 1.1em;
+    }
+  }
+
+  .review-sentenses {
+    margin: 2pc 1pc;
 
     h3 {
-      font-size: 1.2em;
-
+      font-size: 1.4em;
       font-weight: bold;
     }
-
-    strong {
-      font-size: 1.2em;
-
+    p {
+      font-size: 1.1em;
     }
   }
 `;
