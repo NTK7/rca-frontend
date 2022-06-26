@@ -13,7 +13,7 @@ const Detector = () => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [textareaContent, setTextareaContent] = useState<string>("");
   const [result, setResult] = useState<string | undefined>();
-  const [reviewSentenses, setReviewSentenses] = useState<SentenseType[]>([]);
+  const [reviewSentenses, setReviewSentenses] = useState<SentenseType[] | undefined>(undefined);
 
   const handleScan = () => {
     if (!textareaContent) {
@@ -38,6 +38,7 @@ const Detector = () => {
 
   const handleReset = () => {
     setTextareaContent("");
+    setReviewSentenses(undefined);
     setResult(undefined);
   };
 
@@ -77,7 +78,7 @@ const Detector = () => {
         </div>
       )}
 
-      {reviewSentenses.length > 0 && (
+      {reviewSentenses && (
         <div className="review-sentenses">
           <h3>Review sentences:</h3>
 
