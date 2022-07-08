@@ -7,6 +7,7 @@ import CustomButton from "../../common/CustomButton/CustomButton";
 type SentenseType = {
   sentense: string;
   review: string;
+  reviewType: string;
 };
 
 const Detector = () => {
@@ -46,7 +47,7 @@ const Detector = () => {
     <DetectorStyled>
       <textarea
         rows={10}
-        style={{ width: "100%" }}
+        style={{ width: "97%" }}
         disabled={isLoading}
         value={textareaContent}
         onChange={(e) => setTextareaContent(e.target.value)}
@@ -55,15 +56,15 @@ const Detector = () => {
       <section className="buttons">
         <CustomButton
           width="150px"
-          borderRadius="8px"
+          borderRadius="3px"
           type="primary"
-          content="Scan"
+          content={isLoading ? "loading..." : "Scan"}
           isDisabled={isLoading}
           handleEvent={handleScan}
         />
         <CustomButton
           width="150px"
-          borderRadius="8px"
+          borderRadius="3px"
           type="secondary"
           isDisabled={isLoading}
           content="Reset"
@@ -85,7 +86,7 @@ const Detector = () => {
           {reviewSentenses.map((sentense, index) => (
             <p key={index}>
               {" "}
-              # {sentense.sentense} = <strong>{sentense.review}</strong>{" "}
+              # {sentense.sentense} = <strong>{sentense.review} (Type = {sentense.reviewType})</strong>{" "}
             </p>
           ))}
         </div>
@@ -97,6 +98,7 @@ const Detector = () => {
 export default Detector;
 
 const DetectorStyled = styled.div`
+  overflow-x: hidden;
   .buttons {
     display: flex;
     justify-content: flex-end;
@@ -106,10 +108,9 @@ const DetectorStyled = styled.div`
 
   textarea {
     height: 100%;
-    border-radius: 8px;
     padding: 1pc;
-    font-size: 1.2em;
-    margin: auto 1pc;
+    font-size: 1em;
+    margin: auto 2pc;
     outline: none;
   }
 

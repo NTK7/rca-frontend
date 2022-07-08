@@ -1,21 +1,96 @@
 import styled from "styled-components";
+import { Input } from "antd";
+import { useState } from "react";
+import axios from "axios";
+import CustomButton from "../../common/CustomButton/CustomButton";
+import { detectionApi } from "../../api/DetectionApi";
 
 const DetectorHero = () => {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [completedSearch, setCompletedSearch] = useState(false)
+  const [searchText, setSearchText] = useState<string>("");
+  const [reviewsList, setReviewsList] = useState([]);
+
+  const handleSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+    setSearchText(e.target.value);
+  };
+
+  const handleReset = () => {
+    setSearchText("");
+    setReviewsList([]);
+    setCompletedSearch(false);
+  };
+
+  const handleScan = () => {
+    if (!searchText) {
+      alert("Please enter text to scan");
+      return;
+    }
+    setIsLoading(true);
+
+    axios
+      .get(`${detectionApi.search}/${searchText}`)
+      .then((response) => {
+        setCompletedSearch(true);
+        let reviews = response.data["Reviews"];
+        setReviewsList(reviews);
+      })
+      .catch(() => alert("Something went wrong when scanning the text"))
+      .finally(() => setIsLoading(false));
+  };
+
   return (
     <DetectorHeroStyled>
-      <section className="left">
-        {/* <h2>Discover the truth</h2>
-        <p>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Similique officia quas et corporis ullam eius. Magnam natus est suscipit, eaque fugiat autem fuga maxime voluptates officiis sequi iste modi! Quo esse impedit ex obcaecati excepturi odio id doloribus at maxime ad nobis, neque, unde eum?
-        </p>
-        <p>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Inventore, sequi unde corporis cupiditate quaerat nesciunt deserunt ratione. Aliquid eum quas suscipit optio aperiam obcaecati nesciunt deserunt dolor. Quidem, assumenda facere.
-        </p> */}
-      </section>
+      <h2>Search reviews by keywords</h2>
+      <p>
+        You can search for reviews based on the search keyword you enter with in
+        the field.
+      </p>
+      <form>
+        <Input
+          placeholder="Enter search key word"
+          value={searchText}
+          onChange={handleSearchText}
+          style={{ margin: "5px" }}
+        />
+        <section style={{ display: "flex" }}>
+          <CustomButton
+            width="120px"
+            borderRadius="3px"
+            type="primary"
+            content={isLoading ? "loading..." : "Search"}
+            isDisabled={isLoading}
+            handleEvent={handleScan}
+          />
+          <CustomButton
+            width="120px"
+            borderRadius="3px"
+            type="secondary"
+            isDisabled={isLoading}
+            content="Reset"
+            handleEvent={handleReset}
+          />
+        </section>
+      </form>
 
-      <section className="right">
-        {/* <img src="banner-2.PNG" alt="" /> */}
-      </section>
+      <br />
+      {reviewsList.length > 0 && (
+        <div>
+          <h3>Search results:</h3>
+          <ul>
+            {reviewsList.map((review, index) => (
+              <li key={index}>
+                <h4>{review}</h4>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {completedSearch && reviewsList.length === 0 && (
+        <div> No results found for the search keyword </div>
+      )}
     </DetectorHeroStyled>
   );
 };
@@ -24,21 +99,7 @@ export default DetectorHero;
 
 const DetectorHeroStyled = styled.div`
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
   margin: 8vh 2pc;
-
-  section {
-    img {
-      object-fit: contain;
-      height: 250px;
-    }
-    h2 {
-      font-size: 2em;
-    }
-    p {
-        font-size: 1.2em;
-        width: 45vw;
-        text-align: justify;
-    }
-  }
 `;
