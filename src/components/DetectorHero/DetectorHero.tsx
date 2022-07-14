@@ -33,7 +33,7 @@ const DetectorHero = () => {
       .get(`${detectionApi.search}/${searchText}`)
       .then((response) => {
         setCompletedSearch(true);
-        let reviews = response.data["Reviews"];
+        let reviews = response.data;
         setReviewsList(reviews);
       })
       .catch(() => alert("Something went wrong when scanning the text"))
@@ -79,9 +79,9 @@ const DetectorHero = () => {
         <div>
           <h3>Search results:</h3>
           <ul>
-            {reviewsList.map((review, index) => (
+            {reviewsList.map((review: any, index) => (
               <li key={index}>
-                <h4>{review}</h4>
+                {review.sentense} = <strong>{review.review} (Type = {review.reviewType})</strong>{" "}
               </li>
             ))}
           </ul>

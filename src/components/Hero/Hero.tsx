@@ -16,14 +16,19 @@ const Hero = () => {
         history.push(RoutePaths.detector);
     }
 
+    const navigateToSearch = () => {
+        history.push(RoutePaths.search);
+    }
+
     return (
         <HeroStyled>
             <section>
                 <h1>Welcome!</h1>
                 <h2>Get Started!</h2>
 
-                <CustomButton width="250px" borderRadius="20px" type="primary" content="ABOUT" handleEvent={scrollToAbout}/>
-                <CustomButton width="250px" borderRadius="20px" type="secondary" content="DETECTOR" handleEvent={navigateToDetector}/>
+                <CustomButton width="250px" borderRadius="20px" type="secondary" content="ABOUT" handleEvent={scrollToAbout}/>
+                <CustomButton width="250px" borderRadius="20px" type="primary" content="DETECTOR" handleEvent={navigateToDetector}/>
+                <CustomButton width="250px" borderRadius="20px" type="secondary" content="SEARCH" handleEvent={navigateToSearch}/>
             </section>
 
             <section>

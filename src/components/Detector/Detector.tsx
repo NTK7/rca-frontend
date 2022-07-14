@@ -51,7 +51,7 @@ const Detector = () => {
         disabled={isLoading}
         value={textareaContent}
         onChange={(e) => setTextareaContent(e.target.value)}
-        placeholder="Enter message here..."
+        placeholder="Enter review message here..."
       />
       <section className="buttons">
         <CustomButton
@@ -99,6 +99,7 @@ export default Detector;
 
 const DetectorStyled = styled.div`
   overflow-x: hidden;
+  margin-top: 5pc;
   .buttons {
     display: flex;
     justify-content: flex-end;
