@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import DetectorHero from '../../components/DetectorHero/DetectorHero';
-import Footer from '../../components/Footer/Footer';
 import Header from '../../components/Header/Header';
 
 const SearchPage = () => {
